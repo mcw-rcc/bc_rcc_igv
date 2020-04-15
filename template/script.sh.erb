@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+
+# Clean the environment
+module purge
+
+# Set working directory to home directory
+cd "${HOME}"
+
+# Load the required environment
+module load <%= context.modules %>
+
+#
+# Start IGV
+#
+
+# Launch IGV
+module list
+set -x
+igv

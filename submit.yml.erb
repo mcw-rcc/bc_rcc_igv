@@ -1,0 +1,8 @@
+---
+batch_connect:
+  template: vnc
+script:
+  email: <%= ENV["USER"] %>@mcw.edu
+  native:
+    resources:
+      nodes: "1:ppn=<%= num_of_cores %>"
