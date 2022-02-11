@@ -1,0 +1,20 @@
+Bootstrap: docker
+From: centos:7
+
+%labels
+Maintainer Matthew Flister
+
+%help
+This container includes Xfce desktop. 
+
+%post
+  # Install necessary packages
+  yum update -y && yum upgrade -y 
+  yum install -y epel-release
+  yum -y groupinstall "Xfce"
+  yum -y groupinstall "X Window System"
+  yum install -y https://yum.osc.edu/ondemand/1.8/compute/el7/x86_64/turbovnc-2.2.3-1.el7.x86_64.rpm
+  yum install -y https://yum.osc.edu/ondemand/1.8/compute/el7/x86_64/python-websockify-0.8.0-1.el7.noarch.rpm
+  yum remove -y tigervnc-server python2-pip
+  yum clean all
+  rm -rf /var/cache/yum/*

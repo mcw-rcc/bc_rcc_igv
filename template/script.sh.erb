@@ -9,28 +9,24 @@ cd "${HOME}"
 # Load the required environment
 module load <%= context.modules %>
 # singularity only needed if desktop is containerized
-module load singularity/3.5.1
 
 #
 # Launch Xfce Window Manager
 #
 
 (
+  unset XDG_RUNTIME_DIR
   export SEND_256_COLORS_TO_REMOTE=1
   export XDG_CONFIG_HOME="<%= session.staged_root.join("config") %>"
   export XDG_DATA_HOME="<%= session.staged_root.join("share") %>"
   export XDG_CACHE_HOME="$(mktemp -d)"
   module restore
   set -x
-  singularity exec -B /var:/var /rcc/stor1/containers/centos_xfce_latest.sif xfwm4 --compositor=off --daemon --sm-client-disable
-  singularity exec -B /var:/var /rcc/stor1/containers/centos_xfce_latest.sif xsetroot -solid "#D3D3D3"
+  xfwm4 --compositor=off --daemon --sm-client-disable
+  xsetroot -solid "#D3D3D3"
 ) &
-
-#
-# Start IGV
-#
 
 # Launch IGV
 module list
 set -x
-igv
+igv.sh
