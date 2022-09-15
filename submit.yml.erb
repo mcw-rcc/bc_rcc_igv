@@ -1,9 +1,26 @@
+<%
+  # your image location will differ
+  image="/hpc/containers/centos_7_xfce_latest.sif"
+%>
 ---
-batch_connect:
-  template: vnc
 script:
   email: <%= ENV["USER"] %>@mcw.edu
   native:
-    resources:
-      nodes: "1:ppn=<%= num_of_cores %>"
-      mem: "5gb"
+    - "--nodes=1"
+    - "--ntasks-per-node=1"
+    - "--mem-per-cpu=2Gb"
+    - "--account=<%= account %>"
+batch_connect:
+  template: "vnc"
+  websockify_cmd: '/usr/bin/websockify'
+  script_wrapper: |
+    module purge
+    module load singularity
+    cat << "CTRSCRIPT" > container.sh
+    export PATH="$PATH:/opt/TurboVNC/bin"
+    %s  
+    CTRSCRIPT
+
+    # your bindpath will differ
+    singularity exec <%= image %> /bin/bash container.sh
+
